@@ -24,6 +24,7 @@ public class Mobile {
 		if(carType instanceof Cars)
 		{
 			Mobile.console("Your car: "+carType.getType());
+			carType.start();
 		}
 		else
 			Mobile.console("Cannot find car you type");
@@ -33,6 +34,9 @@ public class Mobile {
 //		Registering cars type
 		Map<String, Cars> carList =new HashMap<String, Cars>();
 		carList.put("sedan", new Sedan());
+		carList.put("truck", new Truck());
+		carList.put("suv", new Suv());
+		carList.put("bus", new Bus());
 		if(carList.containsKey(carType))
 			return carList.get(carType);
 		else

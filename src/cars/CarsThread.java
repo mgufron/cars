@@ -25,8 +25,8 @@ public class CarsThread implements Runnable {
 				switch(key.toLowerCase())
 				{
 				case "j":
-					if(!this.car.runnable())
-					this.car.start();
+					if(!this.car.runable())
+					this.car.startEngine();
 					else
 						System.out.println("Car already running, use 'b' to stop it");
 				break;
@@ -37,7 +37,7 @@ public class CarsThread implements Runnable {
 					this.car.honk();
 				break;
 				case "b":
-					if(this.car.t.isAlive())
+					if(this.car.runable())
 					this.car.stop();
 					else
 						System.out.println("Start the engine first by enter 'j' ");

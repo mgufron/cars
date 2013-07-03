@@ -1,24 +1,22 @@
 package cars;
+
 import cars.CarsThread;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-abstract public class Cars implements Runnable {
-	volatile Thread t;
-	Cars() {
-		// Create a new, second thread
-	}
+public class Cars implements Runnable {
+	Thread t;
 	   
 	// This is the entry point for the second thread.
 	public void run() {
-		while(t instanceof Thread && t.isAlive())
+		while(this.runable())
 		{
 			try {
 				Date date = new Date();
 				SimpleDateFormat formattedDate = new SimpleDateFormat("HH:mm");
 				System.out.println("("+formattedDate.format(date).toString()+") "+this.getType()+": running");
-				Thread.sleep(1000);
+				Thread.sleep(1000*60);
 			} catch (InterruptedException e) {
 				System.out.println(this.getType()+": interupted");
 			}
@@ -41,12 +39,19 @@ abstract public class Cars implements Runnable {
 
 	public void start()
 	{
-		System.out.println(this.getType()+": Start the engine");
-		  t = new Thread(this, "Running car");
+		System.out.println("Allright, this is the manual. Remember this thing, enter");
+		System.out.println("\tj \t\t to run the car");
+		System.out.println("\tk \t\t to make a honk");
+		System.out.println("\tp \t\t to open the door");
+		System.out.println("\tb \t\t to stop the car");
+		System.out.println("Have fun. :D");
+		new CarsThread(this);
+	}
+	
+	public void startEngine()
+	{
+		t = new Thread(this, "Running car");
 		t.start();// Start the thread
-		new CarsThread(this) {
-			
-		};
 	}
 	
 	public void stop()
@@ -59,7 +64,7 @@ abstract public class Cars implements Runnable {
 		}
 	}
 	
-	public boolean runnable()
+	public boolean runable()
 	{
 		return this.t instanceof Thread;
 	}
@@ -69,4 +74,5 @@ abstract public class Cars implements Runnable {
 	{
 		return "Car";
 	}
+	
 }

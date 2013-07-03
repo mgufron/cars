@@ -6,28 +6,44 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 public class Mobile {
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args)
 	{
 		
 //		Begin process. Explaining something important 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		Mobile.console("Welcome. Anyway we have some cars");
 		Mobile.console("This is the list of the cars. Enter the name to choose your car");
-		Mobile.console("Sedan: get Sedan car");
-		Mobile.console("SUV: get SUV car");
-		Mobile.console("Truck: get Truck");
-		Mobile.console("Bus: get Bus");
-		
+		Mobile.console("");
+		Mobile.console("\tsedan \t\t get Sedan car");
+		Mobile.console("\tsuv \t\t get SUV car");
+		Mobile.console("\ttruck \t\t get Truck");
+		Mobile.console("\tbus \t\t get Bus");
+		Mobile.console("");
+		Mobile.createCar(false);
 //		Getting car type and it will check if the class is exists or not
-		Mobile.console("Type your the car type you want to choose");
-		Cars carType = Mobile.getCar(br.readLine());
-		if(carType instanceof Cars)
-		{
-			Mobile.console("Your car: "+carType.getType());
-			carType.start();
-		}
+	}
+	public static void createCar(boolean tryAgain)
+	{
+		if(tryAgain)
+			Mobile.console("Cannot find car you type, Try again. type the car you want. ");
 		else
-			Mobile.console("Cannot find car you type");
+		Mobile.console("Type your the car type you want to choose");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		Cars carType;
+		try {
+			carType = Mobile.getCar(br.readLine());
+			if(carType instanceof Cars)
+			{
+				Mobile.console("Your car: "+carType.getType());
+				carType.start();
+			}
+			else
+			{
+				Mobile.createCar(true);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public static Cars getCar(String carType)
 	{

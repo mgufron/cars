@@ -1,27 +1,24 @@
 package cars;
 import cars.CarsThread;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 abstract public class Cars implements Runnable {
-	Thread t;
+	volatile Thread t;
 	Cars() {
 		// Create a new, second thread
-	  t = new Thread(this, "Running car");
 	}
 	   
 	// This is the entry point for the second thread.
 	public void run() {
-		while(t.isAlive())
+		while(t instanceof Thread && t.isAlive())
 		{
 			try {
 				Date date = new Date();
 				SimpleDateFormat formattedDate = new SimpleDateFormat("HH:mm");
 				System.out.println("("+formattedDate.format(date).toString()+") "+this.getType()+": running");
-				Thread.sleep(1000*60);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				System.out.println(this.getType()+": interupted");
 			}
@@ -42,12 +39,29 @@ abstract public class Cars implements Runnable {
 		System.out.println(this.getType()+": Honking");
 	}
 
-	public void start() throws IOException
+	public void start()
 	{
 		System.out.println(this.getType()+": Start the engine");
-		CarsThread carThread = new CarsThread();
-		if(!t.isAlive())
-			t.start();// Start the thread
+		  t = new Thread(this, "Running car");
+		t.start();// Start the thread
+		new CarsThread(this) {
+			
+		};
+	}
+	
+	public void stop()
+	{
+		System.out.println(this.getType()+" : stopping");
+		
+		if(t != null)
+		{
+			t=null;
+		}
+	}
+	
+	public boolean runnable()
+	{
+		return this.t instanceof Thread;
 	}
 	
 	

@@ -1,17 +1,25 @@
 package base;
 import threads.CarsThread;
+import interfaces.CarsInterface;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Cars implements MobileInterface {
-//	static variable, the way to access of the the variable must be the variable name only without this
-//	or if it is declared as public and want to access from outside the class it should access like this
-//	Cars.wheelsNumber;
-	public static int wheelsNumber=0;
+public class Cars implements CarsInterface {
 	
+	private int wheelsNumber=4;
+	private String type="Cars";
+	public Cars(String type, int wheelsNumber)
+	{
+		this.type=type;
+		this.wheelsNumber=wheelsNumber;
+	}
 	public int getWheels()
 	{
 		return wheelsNumber;
+	}
+	public void setWheels(int wheelsNumber)
+	{
+		this.wheelsNumber = wheelsNumber;
 	}
 	
 	public void openDoor(){
@@ -37,6 +45,11 @@ public class Cars implements MobileInterface {
 	
 	public String getType()
 	{
-		return "Car";
+		return this.type;
+	}
+
+	public void setType(String type)
+	{
+		this.type = type;
 	}
 }

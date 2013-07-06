@@ -3,11 +3,8 @@ package cars;
 import base.Cars;
 
 public class Sedan extends Cars{
-	public String getType()
+	public Sedan()
 	{
-		return "Sedan";
-	}
-	public int getWheels(){
-		return 4;
+		super("Sedan",4);
 	}
 }

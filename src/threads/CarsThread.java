@@ -18,6 +18,7 @@ public class CarsThread extends CarsThreadBase {
 		System.out.println("\tk \t\t to make a honk");
 		System.out.println("\tp \t\t to open the door");
 		System.out.println("\tb \t\t to stop the car");
+		System.out.println("\tw \t\t to get wheels number");
 		System.out.println("\tc \t\t to change your current car.");
 		System.out.println("\nHave fun. :D");
 		// Create a new, second thread
@@ -49,6 +50,9 @@ public class CarsThread extends CarsThreadBase {
 				case "k":
 					this.car.honk();
 				break;
+				case "w":
+					this.car.console("has "+(Integer.toString(this.car.getWheels()))+" wheels");
+				break;
 				case "b":
 					if(this.carActions.runable())
 						this.carActions.stop();
@@ -61,7 +65,7 @@ public class CarsThread extends CarsThreadBase {
 					else
 					{
 						this.car = null;
-						this.thread= null;
+						active =false;
 						MobileBase.restart();
 					}
 				break;

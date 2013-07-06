@@ -1,5 +1,5 @@
 package base;
 
-public class MobileInterface {
-
+public interface MobileInterface {
+	public void console(String message);
 }

@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import cars.Cars;
+import base.Cars;
 import base.MobileBase;
-
-public class CarsThread implements Runnable {
+import base.CarsThreadBase;
+public class CarsThread extends CarsThreadBase {
 	Thread thread;
 	Cars car;
 	CarsAction carActions;
+	private boolean active=false;
 	public CarsThread(Cars car) {
 		System.out.println("Allright, this is the manual. Remember this thing, enter\n");
 		System.out.println("\tj \t\t to run the car");
@@ -21,16 +22,16 @@ public class CarsThread implements Runnable {
 		System.out.println("\nHave fun. :D");
 		// Create a new, second thread
 		this.car = car;
-	  thread = new Thread(this, "Car Event invoker");
-	  this.carActions = new CarsAction(car);
-	  thread.start();
+		thread = new Thread(this, "Car Event invoker");
+		this.carActions = new CarsAction(car);
+		thread.start();
+		active=true;
 	}
 	   
 	// This is the entry point for the second thread.
 	public void run() {
-
 		try {
-			while(thread instanceof Thread)
+			while(active)
 			{
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 				String key = br.readLine();
@@ -50,7 +51,7 @@ public class CarsThread implements Runnable {
 				break;
 				case "b":
 					if(this.carActions.runable())
-					this.carActions.stop();
+						this.carActions.stop();
 					else
 						this.car.console("Start the engine first by enter 'j' or enter 'c' to go back to choose your desired car");
 				break;
@@ -64,6 +65,8 @@ public class CarsThread implements Runnable {
 						MobileBase.restart();
 					}
 				break;
+				default:
+					this.car.console("Sorry, we don't know that command. Try 'j','k','p','c' or 'b'");
 				}
 			}
 		} catch (IOException e) {

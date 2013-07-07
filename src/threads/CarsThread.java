@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import base.Cars;
-import base.MobileBase;
+import base.Mobile;
 import base.CarsThreadBase;
 public class CarsThread extends CarsThreadBase {
 	Thread thread;
@@ -13,6 +13,16 @@ public class CarsThread extends CarsThreadBase {
 	CarsAction carActions;
 	private boolean active=false;
 	public CarsThread(Cars car) {
+		// Create a new, second thread
+		this.startConsole();
+		this.car = car;
+		thread = new Thread(this, "Car Event invoker");
+		this.carActions = new CarsAction(car);
+		thread.start();
+		active=true;
+	}
+	public void startConsole()
+	{
 		System.out.println("Allright, this is the manual. Remember this thing, enter\n");
 		System.out.println("\tj \t\t to run the car");
 		System.out.println("\tk \t\t to make a honk");
@@ -20,13 +30,8 @@ public class CarsThread extends CarsThreadBase {
 		System.out.println("\tb \t\t to stop the car");
 		System.out.println("\tw \t\t to get wheels number");
 		System.out.println("\tc \t\t to change your current car.");
+		System.out.println("\tn \t\t to rename current car.");
 		System.out.println("\nHave fun. :D");
-		// Create a new, second thread
-		this.car = car;
-		thread = new Thread(this, "Car Event invoker");
-		this.carActions = new CarsAction(car);
-		thread.start();
-		active=true;
 	}
 	   
 	// This is the entry point for the second thread.
@@ -66,11 +71,19 @@ public class CarsThread extends CarsThreadBase {
 					{
 						this.car = null;
 						active =false;
-						MobileBase.restart();
+						Mobile.restart();
 					}
 				break;
+				case "n":
+					String carName = this.car.setCarName(false, null);
+					this.car.setName(carName);
+					this.car.console("Saved");
+				break;
+				case "h":
+					this.startConsole();
+				break;
 				default:
-					this.car.console("Sorry, we don't know that command. Try 'j','k','p','c' or 'b'");
+					this.car.console("Sorry, we don't know that command. Type 'h' if you want to know all available commands");
 				}
 			}
 		} catch (IOException e) {

@@ -1,26 +1,29 @@
 package base;
 
-import interfaces.MobileInterface;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import models.CarsCollection;
+
 import cars.*;
 
-public class MobileBase implements MobileInterface{
+public class Mobile implements base.interfaces.Mobile{
+	public Cars currentCar;
 	public static void main(String[] args)
 	{
 		
 //		Begin process. Explaining something important
 //		Welcome message
-		MobileBase mobile = new MobileBase();
+		Mobile mobile = new Mobile();
 		
 		mobile.console("Welcome. Anyway we have some cars");
 		mobile.console("This is the list of the cars. Enter the name to choose your car");
 //		Cars list
+		
 		mobile.prepareCar();
 //		Getting car type and it will check if the class is exists or not
 	}
@@ -36,6 +39,8 @@ public class MobileBase implements MobileInterface{
 			String key=(String) carKeys[i];
 			this.console("\t"+key+" \t\t"+"get "+carList.get(key).getType()+" car");
 		}
+		
+		this.console("\t--allcar \t"+"get all recently saved cars");
 		this.createCar(false);
 	}
 	public void createCar(boolean tryAgain)
@@ -43,19 +48,27 @@ public class MobileBase implements MobileInterface{
 		if(tryAgain)
 			this.console("\nCannot find car you type, Try again. type the car you want. ");
 		else
-			this.console("\nType your the car type you want to choose");
+			this.console("\nType your car type you want to choose");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		Cars carType;
 		try {
-			carType = this.getCar(br.readLine());
-			if(carType instanceof Cars)
+			String command = br.readLine();
+			if(command.equalsIgnoreCase("--all-car"))
 			{
-				this.console("\nYour car: "+carType.getType());
-				carType.start();
+				this.getLastCars();
+				this.createCar(false);
 			}
 			else
 			{
-				this.createCar(true);
+				this.currentCar = this.getCar(command);
+				if(this.currentCar instanceof Cars)
+				{
+					this.console("\nYour car: "+currentCar.getType());
+					currentCar.start();
+				}
+				else
+				{
+					this.createCar(true);
+				}
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -86,8 +99,29 @@ public class MobileBase implements MobileInterface{
 	}
 	public static void restart()
 	{
-		MobileBase mobile = new MobileBase();
+		Mobile mobile = new Mobile();
 		mobile.console("Welcome back, here is the list of the cars");
 		mobile.prepareCar();
+	}
+	public void getLastCars()
+	{
+		CarsCollection cars = new CarsCollection();
+		ArrayList<Map<String, String>> carsData = cars.findAll();
+		System.out.format("%33s%n", "-");
+		System.out.format("%10s- | %20s%n", "Name","Type");
+		for(int i=0;i<carsData.size();i++)
+		{
+			Map<String, String> carData = carsData.get(i);
+			System.out.format("%10s | %20s%n", carData.get("car_type"), carData.get("car_name"));
+		}
+		System.out.format("%33s", "-");
+	}
+	public void consoleHeader()
+	{
+		
+	}
+	public void consoleContent()
+	{
+		
 	}
 }

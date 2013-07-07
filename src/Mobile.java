@@ -1,4 +1,3 @@
-import base.MobileBase;
-public class Mobile extends MobileBase{
+public class Mobile extends base.Mobile{
 	
 }

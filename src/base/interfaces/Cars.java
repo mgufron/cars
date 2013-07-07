@@ -1,6 +1,6 @@
-package interfaces;
+package base.interfaces;
 
-public interface CarsInterface {
+public interface Cars {
 	public void console(String message);
 	public int getWheels();
 	public void setWheels(int wheelsNumber);

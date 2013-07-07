@@ -40,7 +40,7 @@ public class Mobile implements base.interfaces.Mobile{
 			this.console("\t"+key+" \t\t"+"get "+carList.get(key).getType()+" car");
 		}
 		
-		this.console("\t--allcar \t"+"get all recently saved cars");
+		this.console("\t--all-car \t"+"get all recently saved cars");
 		this.createCar(false);
 	}
 	public void createCar(boolean tryAgain)

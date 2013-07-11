@@ -116,6 +116,13 @@ public class Mobile implements base.interfaces.Mobile{
 		}
 		System.out.format("%33s", "-");
 	}
+	public static boolean getLastCars(Boolean fetchOnly)
+	{
+		CarsCollection cars = new CarsCollection();
+		int carsData = cars.countAll();
+		System.out.println(carsData);
+		return fetchOnly;
+	}
 	public void consoleHeader()
 	{
 		

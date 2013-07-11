@@ -4,10 +4,10 @@ import threads.CarsThread;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import models.CarsCollection;
 
@@ -82,32 +82,26 @@ public class Cars implements base.interfaces.Cars {
 		try{
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			String name = br.readLine();
-			Map<String, String> find = new HashMap<String, String>();
+			ResultSet find = null;
 			if(this.getName()!="")
 			{
 				CarsCollection modelClass = new CarsCollection();
-				find = modelClass.where("car_name='"+this.getName()+"'").find();
-				model.where("car_id!='"+find.get("car_id")+"'");
+				find = modelClass.find(this.getName());
 			}
 			System.out.println("Check availability\n");
-			if(model.where("car_name='"+name+"'").find()!=null)
+			if(model.count(name)>0)
 				return this.setCarName(true, name);
 			else
 			{
-				Map<String, String> attributes = new HashMap<String, String>();
-				attributes.put("car_name", name);
-				if(find.isEmpty())
-				{
-					Date date = new Date();
-					SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					attributes.put("car_type", this.getType());
-					attributes.put("car_saved", formattedDate.format(date));
-				}
+				if(model.count(name)==0)
+				model.insert(name, this.getType());
 				else
-				{
-					model.setUpdateCondition("car_id='"+find.get("car_id")+"'");
-				}
-				model.setAttributes(attributes).save();
+					try {
+						model.update(name, find.getString("car_name"));
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			}
 			return name;
 		}

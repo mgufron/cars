@@ -10,14 +10,11 @@ public class Connector {
 	static final String DB_USER="root";
 	static final String DB_PASS="root";
 	public ArrayList<Map<String, String>> results = new ArrayList<Map<String, String>>();
-	public Connector() {
-		// TODO Auto-generated constructor stub
-	}
 	public void open()
 	{
 		try{
 			Class.forName(JDBC_DRIVER);
-			this.connection = (Connection) DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+			this.connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 		}
 		catch(SQLException se)
 		{
@@ -37,30 +34,5 @@ public class Connector {
 		{
 			se.printStackTrace();
 		}
-	}
-	public boolean execute(String query)
-	{
-		this.open();
-		try{
-			Statement state = this.connection.createStatement();
-			boolean result = state.execute(query);
-			this.close();
-			return result;
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-			this.close();
-			return false;
-		}
-	}
-	public String makeQuery()
-	{
-		return "";
-	}
-	public String createStatement()
-	{
-		return "";
-		
 	}
 }
